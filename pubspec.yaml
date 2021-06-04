@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  oauth2: ^2.0.0
+  flutter_secure_storage: ^4.2.0
   dartz: ^0.10.0-nullsafety.2
   dio: ^4.0.0
   flutter_hooks: ^0.16.0
