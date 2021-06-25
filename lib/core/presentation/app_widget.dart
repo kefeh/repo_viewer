@@ -28,7 +28,7 @@ class AppWidget extends StatelessWidget {
                   predicate: (route) => false);
             },
             unauthenticated: (_) {
-              appRouter.pushAndPopUntil(const StarredReposRoute(),
+              appRouter.pushAndPopUntil(const SignInRoute(),
                   predicate: (route) => false);
             },
           );
