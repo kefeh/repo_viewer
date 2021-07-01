@@ -1,2 +1,24 @@
-GET https://api.github.com/user/starred?page=1
-Authorization: bearer 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
+@baseUrl = https://api.github.com
+@token = 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
+@acceptHeader = application/vnd.github.v3.html+json
+
+GET {{baseUrl}}/user/starred
+    ?page=1
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+
+###
+
+GET {{baseUrl}}/search/repositories
+    ?q=flutter
+    &page=1
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+
+
+###
+
+GET {{baseUrl}}/repos/flutter/flutter/readme
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+
