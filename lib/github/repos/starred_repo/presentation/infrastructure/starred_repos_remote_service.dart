@@ -19,8 +19,11 @@ class StarredReposRemoteService {
     const token = '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';
     const accept = 'application/vnd.github.v3.html+json';
 
-    final requestUri =
-        Uri.https('api.github.com', '/user/starred', {'page': '$page'});
+    final requestUri = Uri.https(
+      'api.github.com',
+      '/user/starred',
+      {'page': '$page'},
+    );
     final previousHeaders = await _headersCache.getHeaders(requestUri);
 
     try {

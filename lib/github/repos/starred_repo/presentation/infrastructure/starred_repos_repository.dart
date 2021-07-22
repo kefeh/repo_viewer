@@ -24,6 +24,7 @@ class StarredRepoRepository {
           notModified: (maxPage) =>
               Fresh.yes([], isNextPageAvailable: page < maxPage),
           withNewData: (data, maxPage) {
+            // TODO: save data in the local storage.
             return Fresh.yes(data.toDomain(),
                 isNextPageAvailable: page < maxPage);
           }));
