@@ -44,7 +44,8 @@ class GithubAuthenticator {
       final storedCredentials = await _credentialsStorage.read();
       if (storedCredentials != null) {
         if (storedCredentials.canRefresh && storedCredentials.isExpired) {
-          // TODO: implementation of refresh here
+          final failureOrCredentials = await refresh(storedCredentials);
+          failureOrCredentials.fold((l) => null, (r) => r);
         }
       }
       return storedCredentials;
