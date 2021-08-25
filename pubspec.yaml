@@ -23,6 +23,7 @@ dependencies:
       url: https://github.com/rrousselGit/river_pod.git
       ref: 147be70df096015af0633456a951d8f2f9c66dc9
       path: packages/hooks_riverpod
+  material_design_icons_flutter: 5.0.5955-rc.1
   oauth2: ^2.0.0
   webview_flutter: ^2.0.8
 
