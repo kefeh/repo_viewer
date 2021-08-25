@@ -7,9 +7,10 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
+import '../../../auth/presentation/authorization_page.dart' as _i5;
 import '../../../auth/presentation/sign_in_page.dart' as _i4;
 import '../../../splash/splash_page.dart' as _i3;
-import '../../../starred_repo/presentation/starred_repo_page.dart' as _i5;
+import '../../../starred_repo/presentation/starred_repo_page.dart' as _i6;
 
 class AppRouter extends _i1.RootStackRouter {
   AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
@@ -27,10 +28,20 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (_) {
           return const _i4.SignInPage();
         }),
+    AuthorizatioRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<AuthorizatioRouteArgs>();
+          return _i5.AuthorizatioPage(
+              key: args.key,
+              authorizationUrl: args.authorizationUrl,
+              onAuthorizationCodeRedirectAttempt:
+                  args.onAuthorizationCodeRedirectAttempt);
+        }),
     StarredReposRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return const _i5.StarredReposPage();
+          return const _i6.StarredReposPage();
         })
   };
 
@@ -38,6 +49,7 @@ class AppRouter extends _i1.RootStackRouter {
   List<_i1.RouteConfig> get routes => [
         _i1.RouteConfig(SplashRoute.name, path: '/'),
         _i1.RouteConfig(SignInRoute.name, path: '/sign-in'),
+        _i1.RouteConfig(AuthorizatioRoute.name, path: '/auth'),
         _i1.RouteConfig(StarredReposRoute.name, path: '/starred')
       ];
 }
@@ -52,6 +64,35 @@ class SignInRoute extends _i1.PageRouteInfo {
   const SignInRoute() : super(name, path: '/sign-in');
 
   static const String name = 'SignInRoute';
+}
+
+class AuthorizatioRoute extends _i1.PageRouteInfo<AuthorizatioRouteArgs> {
+  AuthorizatioRoute(
+      {_i2.Key? key,
+      required Uri authorizationUrl,
+      required void Function(Uri) onAuthorizationCodeRedirectAttempt})
+      : super(name,
+            path: '/auth',
+            args: AuthorizatioRouteArgs(
+                key: key,
+                authorizationUrl: authorizationUrl,
+                onAuthorizationCodeRedirectAttempt:
+                    onAuthorizationCodeRedirectAttempt));
+
+  static const String name = 'AuthorizatioRoute';
+}
+
+class AuthorizatioRouteArgs {
+  const AuthorizatioRouteArgs(
+      {this.key,
+      required this.authorizationUrl,
+      required this.onAuthorizationCodeRedirectAttempt});
+
+  final _i2.Key? key;
+
+  final Uri authorizationUrl;
+
+  final void Function(Uri) onAuthorizationCodeRedirectAttempt;
 }
 
 class StarredReposRoute extends _i1.PageRouteInfo {
