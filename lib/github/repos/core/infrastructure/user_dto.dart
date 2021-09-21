@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:repo_viewer/github/repos/core/dormain/user.dart';
 
 part 'user_dto.freezed.dart';
 part 'user_dto.g.dart';
@@ -13,4 +14,17 @@ class UserDTO with _$UserDTO {
 
   factory UserDTO.fromJson(Map<String, dynamic> json) =>
       _$UserDTOFromJson(json);
+
+  factory UserDTO.fromDormain(User _) {
+    return UserDTO(
+      name: _.name,
+      avatarUrl: _.avatarUrl,
+    );
+  }
+  User toDormain() {
+    return User(
+      name: name,
+      avatarUrl: avatarUrl,
+    );
+  }
 }
