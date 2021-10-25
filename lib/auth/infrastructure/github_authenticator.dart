@@ -96,7 +96,7 @@ class GithubAuthenticator {
         .then((credentials) => credentials?.accessToken);
     try {
       try {
-        _dio.deleteUri(
+        await _dio.deleteUri(
           revokationEndpoint,
           data: {
             'access_token': accessToken,
