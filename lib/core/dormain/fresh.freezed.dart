@@ -120,7 +120,7 @@ class __$FreshCopyWithImpl<T, $Res> extends _$FreshCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$_Fresh<T> extends _Fresh<T> {
+class _$_Fresh<T> extends _Fresh<T> with DiagnosticableTreeMixin {
   const _$_Fresh(
       {required this.entity, required this.isFresh, this.isNextPageAvailable})
       : super._();
@@ -133,8 +133,18 @@ class _$_Fresh<T> extends _Fresh<T> {
   final bool? isNextPageAvailable;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Fresh<$T>(entity: $entity, isFresh: $isFresh, isNextPageAvailable: $isNextPageAvailable)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'Fresh<$T>'))
+      ..add(DiagnosticsProperty('entity', entity))
+      ..add(DiagnosticsProperty('isFresh', isFresh))
+      ..add(DiagnosticsProperty('isNextPageAvailable', isNextPageAvailable));
   }
 
   @override
