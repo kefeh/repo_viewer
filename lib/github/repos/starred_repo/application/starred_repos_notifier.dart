@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repo_viewer/core/dormain/fresh.dart';
+import 'package:repo_viewer/github/core/infrastructure/pagination_config.dart';
 import 'package:repo_viewer/github/repos/core/dormain/github_failure.dart';
 import 'package:repo_viewer/github/repos/core/dormain/github_repo.dart';
 import 'package:repo_viewer/github/repos/starred_repo/infrastructure/starred_repos_repository.dart';
@@ -32,4 +33,27 @@ class StarredReposNotifier extends StateNotifier<StarredReposState> {
   StarredReposNotifier(this._repository)
       : super(StarredReposState.initial(Fresh.yes([])));
   int _page = 1;
+
+  Future<void> getNextStarredReposPage() async {
+    state = StarredReposState.loadInProgress(
+      state.repos,
+      PaginationConfig.itemsPerPage,
+    );
+    final failureOrRepos = await _repository.getStarredReposPage(_page);
+    failureOrRepos.fold(
+      (l) => state = StarredReposState.loadFailure(state.repos, l),
+      (r) {
+        state = StarredReposState.loadSuccess(
+          r.copyWith(
+            entity: [
+              ...state.repos.entity,
+              ...r.entity,
+            ],
+          ),
+          isNextPageAvailable: r.isNextPageAvailable ?? false,
+        );
+        _page++;
+      },
+    );
+  }
 }
