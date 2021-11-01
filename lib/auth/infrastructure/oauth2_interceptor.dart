@@ -39,7 +39,8 @@ class OAuth2Interceptor extends Interceptor {
       final refreshCredentials = await _authenticator.getSignedInCredentials();
       if (refreshCredentials != null) {
         handler.resolve(await _dio.fetch(err.requestOptions
-          ..headers['Authorization'] = 'Bearer $refreshCredentials'));
+          ..headers['Authorization'] =
+              'Bearer ${refreshCredentials.accessToken}'));
       }
     }
   }
