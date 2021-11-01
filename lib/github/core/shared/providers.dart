@@ -1,5 +1,4 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:repo_viewer/core/infrastructure/sembast_database.dart';
 import 'package:repo_viewer/core/shared/providers.dart';
 import 'package:repo_viewer/github/core/infrastructure/github_headers_cache.dart';
 import 'package:repo_viewer/github/repos/starred_repo/application/starred_repos_notifier.dart';
