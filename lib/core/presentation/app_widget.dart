@@ -12,8 +12,8 @@ final initialisationProvider = FutureProvider<Unit>((ref) async {
   ref.read(dioProvider)
     ..options = BaseOptions(
         headers: {'Accept': 'application/vnd.github.v3.html+json'},
-        validateStatus: (int? status) {
-          return status! >= 200 && status < 300 || status == 304;
+        validateStatus: (status) {
+          return status != null && status >= 200 && status < 400;
         })
     ..interceptors.add(ref.watch(oAuth2InterceptorProvider));
   final authNotifier = ref.read(authNotifierProvider.notifier);
