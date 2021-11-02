@@ -39,21 +39,21 @@ class StarredReposNotifier extends StateNotifier<StarredReposState> {
       state.repos,
       PaginationConfig.itemsPerPage,
     );
-    final failureOrRepos = await _repository.getStarredReposPage(_page);
-    failureOrRepos.fold(
-      (l) => state = StarredReposState.loadFailure(state.repos, l),
-      (r) {
-        state = StarredReposState.loadSuccess(
-          r.copyWith(
-            entity: [
-              ...state.repos.entity,
-              ...r.entity,
-            ],
-          ),
-          isNextPageAvailable: r.isNextPageAvailable ?? false,
-        );
-        _page++;
-      },
-    );
+    // final failureOrRepos = await _repository.getStarredReposPage(_page);
+    // failureOrRepos.fold(
+    //   (l) => state = StarredReposState.loadFailure(state.repos, l),
+    //   (r) {
+    //     state = StarredReposState.loadSuccess(
+    //       r.copyWith(
+    //         entity: [
+    //           ...state.repos.entity,
+    //           ...r.entity,
+    //         ],
+    //       ),
+    //       isNextPageAvailable: r.isNextPageAvailable ?? false,
+    //     );
+    //     _page++;
+    //   },
+    // );
   }
 }
