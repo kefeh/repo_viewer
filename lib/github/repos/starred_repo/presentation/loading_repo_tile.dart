@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
 class LoadingRepoTile extends StatelessWidget {
@@ -12,10 +13,37 @@ class LoadingRepoTile extends StatelessWidget {
       baseColor: Colors.grey.shade400,
       highlightColor: Colors.grey.shade300,
       child: ListTile(
-        title: Container(
-          height: 14,
-          width: 100,
-          color: Colors.grey,
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            height: 14,
+            width: 100,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+        ),
+        subtitle: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            height: 14,
+            width: 300,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+        ),
+        leading: CircleAvatar(),
+        trailing: Column(
+          children: [
+            const Icon(MdiIcons.starOutline),
+            Text(
+              '',
+              style: Theme.of(context).textTheme.caption,
+            ),
+          ],
         ),
       ),
     );
