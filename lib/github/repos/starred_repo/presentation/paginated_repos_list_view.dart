@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repo_viewer/github/core/shared/providers.dart';
 import 'package:repo_viewer/github/repos/core/dormain/github_repo.dart';
+import 'package:repo_viewer/github/repos/starred_repo/presentation/repo_tile.dart';
 
 class PaginatedReposListView extends StatelessWidget {
   const PaginatedReposListView({
@@ -31,20 +32,5 @@ class PaginatedReposListView extends StatelessWidget {
         },
       );
     });
-  }
-}
-
-class ReposTile extends StatelessWidget {
-  final GithubRepo repo;
-  const ReposTile({
-    Key? key,
-    required this.repo,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(repo.fullName),
-    );
   }
 }
