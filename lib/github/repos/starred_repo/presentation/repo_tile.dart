@@ -20,8 +20,21 @@ class ReposTile extends StatelessWidget {
       ),
       leading: CircleAvatar(
         backgroundColor: Colors.transparent,
-        backgroundImage: CachedNetworkImageProvider(repo.owner.avatarUrl),
+        backgroundImage: CachedNetworkImageProvider(
+          repo.owner.avatarUrlSmall,
+        ),
       ),
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.star_border_outlined),
+          Text(
+            repo.stargazersCount.toString(),
+            style: Theme.of(context).textTheme.caption,
+          )
+        ],
+      ),
+      onTap: () {},
     );
   }
 }
