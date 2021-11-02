@@ -8,11 +8,13 @@ import 'package:repo_viewer/core/presentation/routes/app_router.gr.dart';
 import 'package:repo_viewer/core/shared/providers.dart';
 
 final initialisationProvider = FutureProvider<Unit>((ref) async {
-  ref.read(sembastProvider).init();
-  final dioNotifier = ref.read(dioProvider)
+  await ref.read(sembastProvider).init();
+  ref.read(dioProvider)
     ..options = BaseOptions(
-      headers: {'Accept': 'application/vnd.github.v3.html+json'},
-    )
+        headers: {'Accept': 'application/vnd.github.v3.html+json'},
+        validateStatus: (int? status) {
+          return status! >= 200 && status < 300 || status == 304;
+        })
     ..interceptors.add(ref.watch(oAuth2InterceptorProvider));
   final authNotifier = ref.read(authNotifierProvider.notifier);
   await authNotifier.checkUpdateAuthStatus();

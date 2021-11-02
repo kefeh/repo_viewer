@@ -23,18 +23,16 @@ class GithubAuthenticator {
 
   GithubAuthenticator(this._credentialsStorage, this._dio);
 
-  static const clientId = "caf56c4ead1731927884";
-  static const clientSecrete = "a785465e752da41086ae934b29a701468ea83c58";
-  static const scopes = ["read:user", "repo"];
-
+  static const clientId = '422249753fb132543eff';
+  static const clientSecret = '0559c45a67831e2cc340660c5f0f9ee688708e38';
+  static const scopes = ['read:user', 'repo'];
   static final authorizationEndpoint =
-      Uri.parse("https://github.com/login/oauth/authorize");
+      Uri.parse('https://github.com/login/oauth/authorize');
   static final tokenEndpoint =
-      Uri.parse("https://github.com/login/oauth/access_token");
-
-  static final redirectUri = Uri.parse("http://localhost:3000/callback");
-  static final revokationEndpoint =
+      Uri.parse('https://github.com/login/oauth/access_token');
+  static final revocationEndpoint =
       Uri.parse('https://api.github.com/applications/$clientId/token');
+  static final redirectUrl = Uri.parse('http://localhost:3000/callback');
 
   Future<Credentials?> getSignedInCredentials() async {
     try {
@@ -42,7 +40,7 @@ class GithubAuthenticator {
       if (storedCredentials != null) {
         if (storedCredentials.canRefresh && storedCredentials.isExpired) {
           final failureOrCredentials = await refresh(storedCredentials);
-          failureOrCredentials.fold((l) => null, (r) => r);
+          return failureOrCredentials.fold((l) => null, (r) => r);
         }
       }
       return storedCredentials;
@@ -59,16 +57,13 @@ class GithubAuthenticator {
       clientId,
       authorizationEndpoint,
       tokenEndpoint,
-      secret: clientSecrete,
+      secret: clientSecret,
       httpClient: GithubOAuthHttpClient(),
     );
   }
 
   Uri getAuthorizationUrl(AuthorizationCodeGrant grant) {
-    return grant.getAuthorizationUrl(
-      redirectUri,
-      scopes: scopes,
-    );
+    return grant.getAuthorizationUrl(redirectUrl, scopes: scopes);
   }
 
   Future<Either<AuthFailure, Unit>> handleAuthorizationResponse(
@@ -82,7 +77,7 @@ class GithubAuthenticator {
     } on FormatException {
       return left(const AuthFailure.server());
     } on AuthorizationException catch (e) {
-      return left(AuthFailure.server("${e.error}: ${e.description}"));
+      return left(AuthFailure.server('${e.error}: ${e.description}'));
     } on PlatformException {
       return left(const AuthFailure.storage());
     }
@@ -90,35 +85,35 @@ class GithubAuthenticator {
 
   Future<Either<AuthFailure, Unit>> signOut() async {
     try {
-      final usernameAndPassword =
-          stringToBase64.encode('$clientId:$clientSecrete');
       final accessToken = await _credentialsStorage
           .read()
           .then((credentials) => credentials?.accessToken);
+
+      final usernameAndPassword =
+          stringToBase64.encode('$clientId:$clientSecret');
+
       try {
         await _dio.deleteUri(
-          revokationEndpoint,
+          revocationEndpoint,
           data: {
             'access_token': accessToken,
           },
           options: Options(
             headers: {
-              'Authorization': "bearer $usernameAndPassword",
+              'Authorization': 'basic $usernameAndPassword',
             },
           ),
         );
       } on DioError catch (e) {
         if (e.isNoConnectionError) {
-          print("Token not revoked");
+          // Ignoring
         } else {
           rethrow;
         }
       }
       return clearCredentialsStorage();
     } on PlatformException {
-      return left(
-        const AuthFailure.storage(),
-      );
+      return left(const AuthFailure.storage());
     }
   }
 
@@ -127,24 +122,25 @@ class GithubAuthenticator {
       await _credentialsStorage.clear();
       return right(unit);
     } on PlatformException {
-      return const Left(AuthFailure.storage());
+      return left(const AuthFailure.storage());
     }
   }
 
   Future<Either<AuthFailure, Credentials>> refresh(
-      Credentials credentials) async {
+    Credentials credentials,
+  ) async {
     try {
-      final refreshCredentials = await credentials.refresh(
+      final refreshedCredentials = await credentials.refresh(
         identifier: clientId,
-        secret: clientSecrete,
+        secret: clientSecret,
         httpClient: GithubOAuthHttpClient(),
       );
-      await _credentialsStorage.save(refreshCredentials);
-      return right(refreshCredentials);
-    } on AuthorizationException catch (e) {
-      return left(AuthFailure.server('${e.error}:${e.description}'));
+      await _credentialsStorage.save(refreshedCredentials);
+      return right(refreshedCredentials);
     } on FormatException {
       return left(const AuthFailure.server());
+    } on AuthorizationException catch (e) {
+      return left(AuthFailure.server('${e.error}: ${e.description}'));
     } on PlatformException {
       return left(const AuthFailure.storage());
     }

@@ -8,10 +8,10 @@ import 'package:repo_viewer/core/infrastructure/dio_extensions.dart';
 import 'package:repo_viewer/github/core/infrastructure/pagination_config.dart';
 
 class StarredReposRemoteService {
-  final Dio _dio = Dio();
+  final Dio _dio;
   final GithubHeadersCache _headersCache;
 
-  StarredReposRemoteService(this._headersCache);
+  StarredReposRemoteService(this._headersCache, this._dio);
 
   Future<RemoteResponse<List<GithubRepoDTO>>> getStarredRepos(
     int page,
@@ -36,6 +36,7 @@ class StarredReposRemoteService {
           },
         ),
       );
+      print(response);
       if (response.statusCode == 304) {
         return RemoteResponse.notModified(
             maxPage: previousHeaders?.link?.maxPage ?? 0);

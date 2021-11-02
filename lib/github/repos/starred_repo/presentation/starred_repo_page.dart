@@ -17,11 +17,11 @@ class _StarredReposPageState extends State<StarredReposPage> {
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      context
+    Future.microtask(
+      () => context
           .read(starredReposNotifierProvider.notifier)
-          .getNextStarredReposPage();
-    });
+          .getNextStarredReposPage(),
+    );
   }
 
   @override

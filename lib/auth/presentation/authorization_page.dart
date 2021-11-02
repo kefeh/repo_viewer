@@ -39,7 +39,7 @@ class _AuthorizatioPageState extends State<AuthorizatioPage> {
           },
           navigationDelegate: (navReq) {
             if (navReq.url
-                .startsWith(GithubAuthenticator.redirectUri.toString())) {
+                .startsWith(GithubAuthenticator.redirectUrl.toString())) {
               widget.onAuthorizationCodeRedirectAttempt(Uri.parse(navReq.url));
               return NavigationDecision.prevent;
             }
