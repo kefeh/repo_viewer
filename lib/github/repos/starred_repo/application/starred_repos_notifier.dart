@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repo_viewer/auth/dormain/auth_failure.dart';
 import 'package:repo_viewer/core/dormain/fresh.dart';
 import 'package:repo_viewer/github/core/infrastructure/pagination_config.dart';
 import 'package:repo_viewer/github/repos/core/dormain/github_failure.dart';
@@ -35,10 +36,12 @@ class StarredReposNotifier extends StateNotifier<StarredReposState> {
   int _page = 1;
 
   Future<void> getNextStarredReposPage() async {
-    state = StarredReposState.loadInProgress(
-      state.repos,
-      PaginationConfig.itemsPerPage,
-    );
+    state = StarredReposState.loadFailure(
+        state.repos, const GithubFailure.api(erroCode: 404));
+    // state = StarredReposState.loadInProgress(
+    //   state.repos,
+    //   PaginationConfig.itemsPerPage,
+    // );
     // final failureOrRepos = await _repository.getStarredReposPage(_page);
     // failureOrRepos.fold(
     //   (l) => state = StarredReposState.loadFailure(state.repos, l),
