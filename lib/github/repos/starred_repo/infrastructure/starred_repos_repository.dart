@@ -20,11 +20,11 @@ class StarredReposRepository {
       final remotePage = await _remoteService.getStarredRepos(page);
       return right(
         await remotePage.when(
-          noConnection: (maxPage) async => Fresh.no(
+          noConnection: () async => Fresh.no(
             await _localService.getPage(page).then(
                   (value) => value.toDomain(),
                 ),
-            isNextPageAvailable: page < maxPage,
+            isNextPageAvailable: page < await _localService.getLocalPageCount(),
           ),
           notModified: (maxPage) async => Fresh.yes(
             await _localService.getPage(page).then(
