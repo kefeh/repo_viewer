@@ -62,6 +62,11 @@ class StarredReposRemoteService {
       } else {
         rethrow;
       }
+    } catch (e) {
+      print(e);
+      rethrow;
+    } finally {
+      print('fuckshit');
     }
   }
 }

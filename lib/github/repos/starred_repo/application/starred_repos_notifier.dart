@@ -36,27 +36,25 @@ class StarredReposNotifier extends StateNotifier<StarredReposState> {
   int _page = 1;
 
   Future<void> getNextStarredReposPage() async {
-    state = StarredReposState.loadFailure(
-        state.repos, const GithubFailure.api(erroCode: 404));
-    // state = StarredReposState.loadInProgress(
-    //   state.repos,
-    //   PaginationConfig.itemsPerPage,
-    // );
-    // final failureOrRepos = await _repository.getStarredReposPage(_page);
-    // failureOrRepos.fold(
-    //   (l) => state = StarredReposState.loadFailure(state.repos, l),
-    //   (r) {
-    //     state = StarredReposState.loadSuccess(
-    //       r.copyWith(
-    //         entity: [
-    //           ...state.repos.entity,
-    //           ...r.entity,
-    //         ],
-    //       ),
-    //       isNextPageAvailable: r.isNextPageAvailable ?? false,
-    //     );
-    //     _page++;
-    //   },
-    // );
+    state = StarredReposState.loadInProgress(
+      state.repos,
+      PaginationConfig.itemsPerPage,
+    );
+    final failureOrRepos = await _repository.getStarredReposPage(_page);
+    failureOrRepos.fold(
+      (l) => state = StarredReposState.loadFailure(state.repos, l),
+      (r) {
+        state = StarredReposState.loadSuccess(
+          r.copyWith(
+            entity: [
+              ...state.repos.entity,
+              ...r.entity,
+            ],
+          ),
+          isNextPageAvailable: r.isNextPageAvailable ?? false,
+        );
+        _page++;
+      },
+    );
   }
 }
