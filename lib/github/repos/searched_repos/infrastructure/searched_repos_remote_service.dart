@@ -1,31 +1,30 @@
-import 'package:dio/dio.dart';
-import 'package:repo_viewer/core/infrastructure/network_exceptions.dart';
 import 'package:repo_viewer/core/infrastructure/remote_response.dart';
-import 'package:repo_viewer/github/core/infrastructure/github_headers.dart';
 import 'package:repo_viewer/github/core/infrastructure/github_headers_cache.dart';
+import 'package:dio/src/dio.dart';
 import 'package:repo_viewer/github/core/infrastructure/github_repo_dto.dart';
-import 'package:repo_viewer/core/infrastructure/dio_extensions.dart';
 import 'package:repo_viewer/github/core/infrastructure/pagination_config.dart';
 import 'package:repo_viewer/github/repos/core/infrastructure/repos_remote_service.dart';
 
-class StarredReposRemoteService extends ReposRemoteService {
-  StarredReposRemoteService(
+class SearchedReposRemoteService extends ReposRemoteService {
+  SearchedReposRemoteService(
     Dio dio,
     GithubHeadersCache headersCache,
   ) : super(dio, headersCache);
 
-  Future<RemoteResponse<List<GithubRepoDTO>>> getStarredRepos(
+  Future<RemoteResponse<List<GithubRepoDTO>>> getSearchedReposPage(
+    String query,
     int page,
   ) async =>
       super.getPage(
         requestUri: Uri.https(
           'api.github.com',
-          '/user/starred',
+          '/searched/repositories',
           {
+            'q': query,
             'page': '$page',
             'per_page': PaginationConfig.itemsPerPage.toString(),
           },
         ),
-        jsonDataSelector: (json) => json as List<dynamic>,
+        jsonDataSelector: (json) => json['items'] as List<dynamic>,
       );
 }

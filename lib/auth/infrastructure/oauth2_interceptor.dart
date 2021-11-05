@@ -42,6 +42,8 @@ class OAuth2Interceptor extends Interceptor {
           ..headers['Authorization'] =
               'Bearer ${refreshCredentials.accessToken}'));
       }
+    } else {
+      handler.next(err);
     }
   }
 }

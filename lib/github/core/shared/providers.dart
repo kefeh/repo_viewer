@@ -20,8 +20,8 @@ final githubHeadersCacheProvider = Provider(
 
 final starredReposRemoteServiceProvider = Provider(
   (ref) => StarredReposRemoteService(
-    ref.watch(githubHeadersCacheProvider),
     ref.watch(dioProvider),
+    ref.watch(githubHeadersCacheProvider),
   ),
 );
 
