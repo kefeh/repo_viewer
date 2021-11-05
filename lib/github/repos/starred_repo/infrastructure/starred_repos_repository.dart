@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:repo_viewer/core/dormain/fresh.dart';
 import 'package:repo_viewer/core/infrastructure/network_exceptions.dart';
-import 'package:repo_viewer/github/core/infrastructure/github_repo_dto.dart';
 import 'package:repo_viewer/github/repos/core/dormain/github_failure.dart';
 import 'package:repo_viewer/github/repos/core/dormain/github_repo.dart';
+import 'package:repo_viewer/github/repos/core/infrastructure/extentions.dart';
 import 'package:repo_viewer/github/repos/starred_repo/infrastructure/starred_repos_local_service.dart';
 import 'package:repo_viewer/github/repos/starred_repo/infrastructure/starred_repos_remote_service.dart';
 
@@ -44,11 +44,5 @@ class StarredReposRepository {
     } on RestApiException catch (e) {
       return left(GithubFailure.api(erroCode: e.errorCode));
     }
-  }
-}
-
-extension DTOlistToFomainList on List<GithubRepoDTO> {
-  List<GithubRepo> toDomain() {
-    return map((e) => e.toDormain()).toList();
   }
 }
